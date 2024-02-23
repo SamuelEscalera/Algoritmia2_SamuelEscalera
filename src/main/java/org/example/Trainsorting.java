@@ -10,7 +10,7 @@ public class Trainsorting {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int caseNumber = scanner.nextInt();
-        StringBuilder sb = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
 
         while (caseNumber-- > 0) {
             while (!scanner.hasNextInt()) {
@@ -30,22 +30,22 @@ public class Trainsorting {
                 maxLIS = Math.max(maxLIS, LIS[i]);
             }
 
-            sb.append(maxLIS + "\n");
+            stringBuilder.append(maxLIS + "\n");
         }
 
-        System.out.print(sb);
+        System.out.print(stringBuilder);
     }
 
-    static void calcularLIS(int[] memo) {
-        Arrays.fill(memo, 1);
+    static void calcularLIS(int[] lis) {
+        Arrays.fill(lis, 1);
         for (int i = size - 1; i >= 0; i--) {
             int max = 0;
             for (int j = i + 1; j < size; j++) {
                 if (arr[j] > arr[i]) {
-                    max = Math.max(max, memo[j]);
+                    max = Math.max(max, lis[j]);
                 }
             }
-            memo[i] += max;
+            lis[i] += max;
         }
     }
 }

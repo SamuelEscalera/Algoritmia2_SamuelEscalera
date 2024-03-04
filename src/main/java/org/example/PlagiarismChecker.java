@@ -35,8 +35,7 @@ public class PlagiarismChecker {
 
     public static double calculateSimilarity(String text1, String text2) {
         int distance = levenshteinDistance(text1, text2);
-        int maxLength = Math.max(text1.length(), text2.length());
-        return 100.0 - (distance / (double) maxLength) * 100.0;
+        return 100.0 - ((double) distance / (double) text1.length()) * 100.0;
     }
 
 
@@ -50,7 +49,7 @@ public class PlagiarismChecker {
             boolean found = false;
             for (String word1 : words1) {
                 double similarity = calculateSimilarity(word1, word2);
-                if (similarity >= 55.0) {
+                if (similarity >= 95.0) {
                     found = true;
                     break;
                 }
@@ -67,18 +66,25 @@ public class PlagiarismChecker {
     }
 
     public static void main(String[] args) {
+
         String file1 = "1.txt";
         String file2 = "2.txt";
 
         String text1 = readFile(file1);
         String text2 = readFile(file2);
 
+        //Eg 1
+        //String text1 = "This text should show what a printed text will look like at this place. If you read this text you will get no information.";
+        // String text2 = "This paragraph should show what a printd text will look like at this place. If you read this text you will get no informaton.";
+
+        // Eg 2
+        //  String text1 = "Richard Bellman is best known as the father of dynamic programming. He was the author of many books and the recipient of many honors including the first Norbert Wiener Prize in Applied Mathematics.";
+        // String text2 = "Richard Bellman was the author of many books in matematicas.";
         double similarity = calculateSimilarity(text1, text2);
         System.out.println("Porcentaje de similitud: " + similarity + "%");
 
         findMisspelledWords(text1, text2);
     }
-
 
     public static String readFile(String filename) {
         StringBuilder content = new StringBuilder();

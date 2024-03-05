@@ -1,4 +1,4 @@
-package org.example;
+package org.example.PlagiarismChecker;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

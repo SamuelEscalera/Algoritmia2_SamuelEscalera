@@ -8,18 +8,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Esta clase representa una solución para identificar la similitud entre dos textos y encontrar palabras mal escritas.
- * Utiliza el algoritmo de Levenshtein para calcular la distancia de edición entre las cadenas de texto.
+ * This class represents a solution for identifying the similarity between two texts and finding misspelled words.
+ * It uses Levenshtein's algorithm to calculate the edit distance between text strings.
  */
 
 public class PlagiarismChecker {
 
     /**
-     * Calcula la distancia de Levenshtein entre dos cadenas de texto.
+     * Calculates the Levenshtein distance between two text strings.
      *
-     * @param s1 La primera cadena de texto.
-     * @param s2 La segunda cadena de texto.
-     * @return La distancia de Levenshtein entre las dos cadenas.
+     * @param s1 The first string.
+     * @param s2 The second string.
+     * @return The Levenshtein distance between the two strings.
      */
 
     public static int levenshteinDistance(String s1, String s2) {
@@ -48,11 +48,11 @@ public class PlagiarismChecker {
 
 
     /**
-     * Calcula el porcentaje de similitud entre dos textos basado en la distancia de Levenshtein.
+     * Calculates the percentage of similarity between two texts based on the Levenshtein distance.
      *
-     * @param text1 El primer texto.
-     * @param text2 El segundo texto.
-     * @return El porcentaje de similitud entre los textos.
+     * @param text1 The first text.
+     * @param text2 The second text.
+     * @return The percentage of similarity between the texts.
      */
 
     public static double calculateSimilarity(String text1, String text2) {
@@ -77,10 +77,10 @@ public class PlagiarismChecker {
     }
 
     /**
-     * Encuentra y muestra las palabras mal escritas en el segundo texto.
+     * Finds and displays the misspelled words in the second text.
      *
-     * @param text1 El primer texto.
-     * @param text2 El segundo texto.
+     * @param text1 The first text.
+     * @param text2 The second text.
      */
 
     public static void findMisspelledWords(String text1, String text2) {
@@ -89,7 +89,7 @@ public class PlagiarismChecker {
 
         Set<String> commonWords = new HashSet<>(Arrays.asList("the", "was", "and", "of", "in", "on", "at", "to"));
 
-        System.out.println("Palabras mal escritas:");
+        System.out.println("Misspelled words:");
 
         for (String sentence2 : sentences2) {
             if (sentence2.trim().isEmpty()) continue;
@@ -154,18 +154,17 @@ public class PlagiarismChecker {
        //String text2 = "Richard Bellman was the author of many books in matematicas";
 
         double similarity = calculateSimilarity(text1, text2);
-        System.out.println("Porcentaje de similitud: " + similarity + "%");
+        System.out.println("Percentage of similarity: " + similarity + "%");
 
         findMisspelledWords(text1, text2);
     }
 
     /**
-     * Lee el contenido de un archivo de texto y lo devuelve como una cadena.
+     * Reads the contents of a text file and returns it as a string.
      *
-     * @param filename El nombre del archivo a leer.
-     * @return El contenido del archivo como una cadena.
+     * @param filename The name of the file to read.
+     * @return The contents of the file as a string.
      */
-
     public static String readFile(String filename) {
         StringBuilder content = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {

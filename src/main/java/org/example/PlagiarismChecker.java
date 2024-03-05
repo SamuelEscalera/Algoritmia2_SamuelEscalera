@@ -3,8 +3,9 @@ package org.example;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Esta clase representa una solución para identificar la similitud entre dos textos y encontrar palabras mal escritas.
@@ -55,8 +56,24 @@ public class PlagiarismChecker {
      */
 
     public static double calculateSimilarity(String text1, String text2) {
-        int distance = levenshteinDistance(text1, text2);
-        return 100.0 - ((double) distance / (double) text1.length()) * 100.0;
+        String[] sentences1 = text1.split("\\.\\s*");
+        String[] sentences2 = text2.split("\\.\\s*");
+
+        double maxSimilarity = 0.0;
+
+        int maxSentences = Math.min(sentences1.length, sentences2.length);
+
+        for (int i = 0; i < maxSentences; i++) {
+            if (!sentences1[i].trim().isEmpty() && !sentences2[i].trim().isEmpty()) {
+                int distance = levenshteinDistance(sentences1[i].trim().toLowerCase(), sentences2[i].trim().toLowerCase());
+                double similarity = 100.0 - ((double) distance / (double) Math.max(sentences1[i].length(), sentences2[i].length())) * 100.0;
+                if (similarity > maxSimilarity) {
+                    maxSimilarity = similarity;
+                }
+            }
+        }
+
+        return maxSimilarity;
     }
 
     /**
@@ -67,33 +84,47 @@ public class PlagiarismChecker {
      */
 
     public static void findMisspelledWords(String text1, String text2) {
-        String[] words1 = text1.split("\\s+");
-        String[] words2 = text2.split("\\s+");
+        String[] sentences1 = text1.split("\\.\\s*");
+        String[] sentences2 = text2.split("\\.\\s*");
 
-        List<String> misspelledWords = new ArrayList<>();
-
-        for (String word2 : words2) {
-            boolean found = false;
-            for (String word1 : words1) {
-                double similarity = calculateSimilarity(word1, word2);
-                if (similarity >= 95.0) {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
-                misspelledWords.add(word2);
-            }
-        }
+        Set<String> commonWords = new HashSet<>(Arrays.asList("the", "was", "and", "of", "in", "on", "at", "to"));
 
         System.out.println("Palabras mal escritas:");
-        for (String word : misspelledWords) {
-            System.out.println(word);
+
+        for (String sentence2 : sentences2) {
+            if (sentence2.trim().isEmpty()) continue;
+
+            String[] words2 = sentence2.trim().split("\\s+");
+
+            for (String word2 : words2) {
+                word2 = word2.toLowerCase();
+                if (commonWords.contains(word2)) continue;
+
+                boolean found = false;
+
+                for (String sentence1 : sentences1) {
+                    if (sentence1.trim().isEmpty()) continue;
+
+                    String[] words1 = sentence1.trim().split("\\s+");
+
+                    for (String word1 : words1) {
+                        word1 = word1.toLowerCase();
+                        double wordSimilarity = calculateSimilarity(word1, word2);
+                        if (wordSimilarity >= 55.0 && wordSimilarity < 100.0) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found) break;
+                }
+
+                if (found) {
+                    System.out.println(word2);
+                }
+            }
         }
     }
-
     public static void main(String[] args) {
-
         String file1 = "1.txt";
         String file2 = "2.txt";
 
@@ -101,12 +132,27 @@ public class PlagiarismChecker {
         String text2 = readFile(file2);
 
         //Eg 1
-        //String text1 = "This text should show what a printed text will look like at this place. If you read this text you will get no information.";
-        // String text2 = "This paragraph should show what a printd text will look like at this place. If you read this text you will get no informaton.";
+        /*String text1 = "This text should show what a printed\n" +
+                "text will look like at this place. If\n" +
+                "you read this text you will get no\n" +
+                "information.\n";
+        String text2 = "This paragraph should show what a\n" +
+                "printd text will look like at this place.\n" +
+                "If you read this text you will get no\n" +
+                "informaton.\n";*/
 
-        // Eg 2
-        //  String text1 = "Richard Bellman is best known as the father of dynamic programming. He was the author of many books and the recipient of many honors including the first Norbert Wiener Prize in Applied Mathematics.";
-        // String text2 = "Richard Bellman was the author of many books in matematicas.";
+        //Eg 2
+        /*String text1 = "This text should show what a printed\n" +
+                "text will look like at this place. If\n" +
+                "you read this text you will get no\n" +
+                "information.";
+        String text2 = "A blind text like this gives you\n" +
+                "information about the selected font.";*/
+
+        // Eg 3
+       //String text1 = "Richard Bellman is best known as the father of dynamic programming. He was the author of many books and the recipient of many honors including the first Norbert Wiener Prize in Applied Mathematics.";
+       //String text2 = "Richard Bellman was the author of many books in matematicas";
+
         double similarity = calculateSimilarity(text1, text2);
         System.out.println("Porcentaje de similitud: " + similarity + "%");
 
@@ -125,7 +171,7 @@ public class PlagiarismChecker {
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = br.readLine()) != null) {
-                content.append(line).append("\n");
+                content.append(line).append(". ");
             }
         } catch (IOException e) {
             e.printStackTrace();

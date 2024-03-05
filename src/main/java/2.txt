@@ -1,2 +1,4 @@
-A blind text like this gives you
-information about the selected font.
+This paragraph should show what a
+printd text will look like at this place.
+If you read this text you will get no
+informaton.

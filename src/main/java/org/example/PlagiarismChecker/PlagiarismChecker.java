@@ -132,7 +132,7 @@ public class PlagiarismChecker {
         String text2 = readFile(file2);
 
         //Eg 1
-        /*String text1 = "This text should show what a printed\n" +
+       /* String text1 = "This text should show what a printed\n" +
                 "text will look like at this place. If\n" +
                 "you read this text you will get no\n" +
                 "information.\n";

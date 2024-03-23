@@ -5,6 +5,7 @@ X
 R
 M
 N
+S
 A X 12
 X N 8
 X R 11
@@ -12,3 +13,4 @@ R M 20
 R C 25
 A B 15
 N R 13
+A S 50

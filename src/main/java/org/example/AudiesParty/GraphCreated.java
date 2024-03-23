@@ -7,6 +7,7 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * This class is used to create and manipulate undirected weighted networks.
@@ -15,16 +16,23 @@ import java.io.IOException;
  */
 public class GraphCreated {
 
-    public static void main(String[] args) {
-        GraphCreated graph = new GraphCreated();
-        graph.createGraph("C:\\Users\\Samuel Escalera\\Documents\\Algoritmia2_SamuelEscalera\\src\\main\\java\\org\\example\\AudiesParty\\input.txt");//Ruta del archivo txt
+        public static void main(String[] args) {
+        GraphCreated graphCreated = new GraphCreated();
+        Graph<String, DefaultWeightedEdge> graph = graphCreated.createGraph("C:\\Users\\Samuel Escalera\\Documents\\Algoritmia2_SamuelEscalera\\src\\main\\java\\org\\example\\AudiesParty\\input.txt");//Ruta del archivo txt
+
+        GuestList guestList = new GuestList(graph);
+
+        List<String> guestListString = guestList.findMaximalGuestList(14);
+
+        System.out.println("Gust list:");
+        System.out.println(guestListString.toString());
     }
 
     /**
      * Creates an undirected weighted network from a file.
      * @param filePath The path to the file containing the network information.
      */
-    public void createGraph(String filePath){
+    public Graph<String, DefaultWeightedEdge> createGraph (String filePath){
 
         Graph<String, DefaultWeightedEdge> graph = buildGraphFromFile(filePath);
 
@@ -38,6 +46,8 @@ public class GraphCreated {
             double weight = graph.getEdgeWeight(edge);
             System.out.println("(" + sourceVertex + " - " + targetVertex + ") : " + weight);
         };
+
+        return graph;
     }
 
     /**

@@ -1,13 +1,14 @@
-Judy
-Kitt
-Cube
+A
+B
+C
 X
+R
 M
-P
-Judy X 10
-Cube Judy 12
-Kitt X 7
-X M 2
-P Kitt 20
-Cube P 5
-Judy Kitt 13
+N
+A X 12
+X N 8
+X R 11
+R M 20
+R C 25
+A B 15
+N R 13

@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+
         GraphCreated graphCreated = new GraphCreated();
         Graph<String, DefaultWeightedEdge> graph = graphCreated.createGraph("C:\\Users\\Samuel Escalera\\Documents\\Algoritmia2_SamuelEscalera\\src\\main\\java\\org\\example\\AudiesParty\\input.txt");
 
@@ -18,7 +19,14 @@ public class Main {
         double x = scanner.nextDouble();
         List<String> guestListString = guestList.findMaximalGuestList(x);
 
+        GroupFormation groupFormation = new GroupFormation(graph, guestListString);
+
         System.out.println("Gust list:");
         System.out.println(guestListString.toString());
+
+        System.out.print("y = ");
+        int k = scanner.nextInt();
+        groupFormation.formGroups(k);
+
     }
 }

@@ -82,12 +82,18 @@ public class PlagiarismChecker {
      * @param text1 The first text.
      * @param text2 The second text.
      */
-
     public static void findMisspelledWords(String text1, String text2) {
         String[] sentences1 = text1.split("\\.\\s*");
         String[] sentences2 = text2.split("\\.\\s*");
 
         Set<String> commonWords = new HashSet<>(Arrays.asList("the", "was", "and", "of", "in", "on", "at", "to"));
+
+        Set<String> uniqueWords = new HashSet<>();
+        for (String sentence : sentences1) {
+            if (!sentence.trim().isEmpty()) {
+                uniqueWords.addAll(Arrays.asList(sentence.trim().toLowerCase().split("\\s+")));
+            }
+        }
 
         System.out.println("Misspelled words:");
 
@@ -102,44 +108,37 @@ public class PlagiarismChecker {
 
                 boolean found = false;
 
-                for (String sentence1 : sentences1) {
-                    if (sentence1.trim().isEmpty()) continue;
-
-                    String[] words1 = sentence1.trim().split("\\s+");
-
-                    for (String word1 : words1) {
-                        word1 = word1.toLowerCase();
-                        double wordSimilarity = calculateSimilarity(word1, word2);
-                        if (wordSimilarity >= 55.0 && wordSimilarity < 100.0) {
-                            found = true;
-                            break;
-                        }
+                for (String word1 : uniqueWords) {
+                    int distance = levenshteinDistance(word1, word2);
+                    double similarity = 100.0 - ((double) distance / (double) Math.max(word1.length(), word2.length())) * 100.0;
+                    if (similarity >= 55.0 && similarity < 100.0) {
+                        found = true;
+                        break;
                     }
-                    if (found) break;
                 }
-
                 if (found) {
                     System.out.println(word2);
                 }
             }
         }
     }
+
     public static void main(String[] args) {
-        String file1 = "1.txt";
+        /*String file1 = "1.txt";
         String file2 = "2.txt";
 
         String text1 = readFile(file1);
-        String text2 = readFile(file2);
+        String text2 = readFile(file2);*/
 
         //Eg 1
-        /*String text1 = "This text should show what a printed\n" +
+        String text1 = "This text should show what a printed\n" +
                 "text will look like at this place. If\n" +
                 "you read this text you will get no\n" +
                 "information.\n";
         String text2 = "This paragraph should show what a\n" +
                 "printd text will look like at this place.\n" +
                 "If you read this text you will get no\n" +
-                "informaton.\n";*/
+                "informaton.\n";
 
         //Eg 2
         /*String text1 = "This text should show what a printed\n" +
